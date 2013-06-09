@@ -10,6 +10,7 @@
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
           <actionMethod actionName="authentification"/>
+          <actionMethod actionName="login"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
       </controllersDirectory>
@@ -53,6 +54,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="authentification"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="login"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
