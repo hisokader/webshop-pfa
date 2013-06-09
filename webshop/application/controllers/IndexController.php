@@ -14,17 +14,20 @@ class IndexController extends Zend_Controller_Action
     {
     }
 
-    public function authentificationAction()
+    public function loginAction()
     {
+        $this->view=indexAction();
     }
 
-    public function loginAction()
+    public function signinAction()
     {
         // action body
     }
 
 
 }
+
+
 
 
 

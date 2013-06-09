@@ -9,17 +9,17 @@
       <controllersDirectory>
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
-          <actionMethod actionName="authentification"/>
-<<<<<<< HEAD
-          <actionMethod actionName="testanasgit"/>
-=======
           <actionMethod actionName="login"/>
->>>>>>> bb133f9151b6d0a3365f30c532e9ed53b696c17a
+          <actionMethod actionName="signin"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
-      <layoutsDirectory enabled="false"/>
+      <layoutsDirectory>
+        <layoutScriptsDirectory>
+          <layoutScriptFile layoutName="layout"/>
+        </layoutScriptsDirectory>
+      </layoutsDirectory>
       <modelsDirectory>
         <modelFile modelName="Compte"/>
         <modelFile modelName="Rubrique"/>
@@ -57,14 +57,7 @@
             <viewScriptFile forActionName="error"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Index">
-            <viewScriptFile forActionName="authentification"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Index">
-<<<<<<< HEAD
-            <viewScriptFile forActionName="testanasgit"/>
-=======
-            <viewScriptFile forActionName="login"/>
->>>>>>> bb133f9151b6d0a3365f30c532e9ed53b696c17a
+            <viewScriptFile forActionName="signin"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

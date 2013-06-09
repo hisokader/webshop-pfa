@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="utf-8">
+    <?= $this->headTitle();?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="<?= $this->BaseUrl();?>/css/bootstrap.css" rel="stylesheet">
+     <link href="<?= $this->BaseUrl();?>/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<?= $this->BaseUrl();?>/css/style.css" rel="stylesheet">
+    <style type="text/css">
+    
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        margin: 60px 0;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+      
+      /******************************************/
+     
+      #main-slider .item{
+      height:500px;
+      background:url('img/people.jpg') no-repeat;
+      
+      }  
+      
+      /*********************/
+      #signPromo{
+      	border-bottom:solid 1px #E5E9EC;
+      	margin:30px auto 60px auto;
+      }
+      #signPromo h2{
+      	color:#2E3133;
+      }
+       #signPromo p{
+      	margin-bottom:40px;
+      }
+    
+      /*********************/
+      #custumersOpinion{
+      	min-height: 300px;
+		background-color:#F7F5F2;
+		margin-top:80px;
+		padding-top: 70px;
+      }
+      #custumersOpinion blockquote{
+		border-left-width: 0px;
+      }
+      #custumersOpinion blockquote p{
+      	font-style: italic;
+  		font-family: Georgia, "Times New Roman", serif;
+		font-size: 2.3em;
+		text-indent: 20px;
+		width: 500px;
+		margin-left: 25px
+      }
+      #custumersOpinion blockquote small{
+		font-size: 1.4em;
+		text-align: right;
+		margin-right: 80px;
+      }
+      #custumersOpinion blockquote span{
+		font-size: 2.2em;
+      }
+
+      /*********************/
+     .content{
+        padding-top:75px;
+      }
+      #singUpBtn{
+      	background-color:#4abfa5;padding:14px 40px 14px 40px;
+      	box-shadow: 0px 2px 2px #888888;
+      }
+    </style>
+   
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src=".././js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+	<link rel="shortcut icon" href="<?= $this->BaseUrl();?>/ico/favicon.png">
+  </head>
+<body>
+ 	<div class="header">
+	 	 	<div id="logo">
+				<img src="<?= $this->BaseUrl();?>/img/logo.png"/>
+			</div>
+	 	 	<div id="menu-heder">
+				<ul class="nav nav-pills pull-right">
+					<li><a href="<?= $this->url(array('controller'=>'index','action'=>'index'));?>">Home</a></li>
+					<li><a href="#">Contact</a></li>
+					<li><a href="#">About</a></li>
+					<li class="horizSeparator">|</li>
+					<li class="bordred">
+						<!-- Button to trigger modal -->
+    					<a href="#logInModal"  data-toggle="modal">LogIn</a>
+    				</li>
+    				<li style="border-color:#70CCB7;"class="bordred">
+            <!-- Button to trigger modal -->
+		              <a href="<?= $this->url(array('controller'=>'index','action'=>'signin'));?>">Sign In</a>
+		            </li>
+				</ul>
+			</div>
+ 	</div><!-- header -->
+
+<div class="content">
+
+
+	<?php echo $this->layout()->content; ?>
+
+
+</div>
+
+ <div class="footer">
+ 	<div class="row">
+	 	<div class="span1 offset1 text-left">
+	 		<h5>Menu</h5>
+	 		<ul>
+	 		<li><a href="#">Home</a></li>
+	 		<li><a href="#">Contact</a></li>
+	 		<li><a href="#">About</a></li>
+	 		<li><a href="#">Sign In</a></li>
+	 		</ul>
+	 	</div>
+	 	<div class="span1 offset1">
+	 		<h5>Categories</h5>
+	 		<ul>
+	 		<li><a href="#">Enseignent</a></li>
+	 		<li><a href="#">Entreprise</a></li>
+	 		<li><a href="#">Project</a></li>
+	 		<li><a href="#">Ecole</a></li>
+	 		<li><a href="#">More ...</a></li>
+	 		</ul>
+	 	</div>
+	 	<div class="span2 offset1">
+	 		<h5>Sociale network</h5>
+			<a href="#"><img src="<?= $this->BaseUrl();?>/img/fb.png" alt="faceBook"></a>
+			<a href="#"><img src="<?= $this->BaseUrl();?>/img/twitter.png" alt="twitter"></a>
+			<a href="#"><img src="<?= $this->BaseUrl();?>/img/rss.png" alt="RSS Feed"></a>
+	 	</div>
+ 	</div>
+	</div><!-- footer -->
+
+    <!-- Modal -->
+    <div id="logInModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Please Login </h3>
+	    </div>
+	  		<form action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get" >
+	    		<div class="modal-body" >
+		    		<label for="login">Login</label>
+		    		<input name="login" id="login" type="text" class"" placeholder="login ..." class="input-xlarge" />
+		    		<br/>
+		    		<label for="password">Password</label>
+		    		<input name="password" id="password" type="text" class"" placeholder="password ..." class="input-xlarge" />
+		    		<a href="#" class="text-warning">Password Forgotten ?</a>
+		    	</div>
+				<div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
+				    <button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" data-dismiss="modal" aria-hidden="true">Close</button>
+				    <input type="submit" style="background-color:#FF9537;background-image:none;" class="btn btn-primary flatBouton">
+			    </div>
+			</form>
+    </div>
+    <script src="<?= $this->BaseUrl();?>/js/jquery.js"></script>
+    <script src="<?= $this->BaseUrl();?>/js/bootstrap.min.js"></script><!--
+    <script src="./js/bootstrap-transition.js"></script>
+    <script src="./js/bootstrap-alert.js"></script>
+    <script src="./js/bootstrap-modal.js"></script>
+    <script src="./js/bootstrap-dropdown.js"></script>
+    <script src="./js/bootstrap-scrollspy.js"></script>
+    <script src="./js/bootstrap-tab.js"></script>
+    <script src="./js/bootstrap-tooltip.js"></script>
+    <script src="./js/bootstrap-popover.js"></script>
+    <script src="./js/bootstrap-button.js"></script>
+    <script src="./js/bootstrap-collapse.js"></script>
+    <script src="./js/bootstrap-carousel.js"></script>
+    <script src="./js/bootstrap-typeahead.js"></script>
+    <script src="./js/bootstrap-affix.js"></script>
+    <script src="./js/holder/holder.js"></script>
+    <script src="./js/google-code-prettify/prettify.js"></script>
+    <script src="./js/application.js"></script>-->
+</body>
+</html>
