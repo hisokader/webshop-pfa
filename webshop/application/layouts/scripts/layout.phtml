@@ -168,20 +168,23 @@
 		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		    <h3 id="myModalLabel">Please Login </h3>
 	    </div>
-	  		<form action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get" >
+	  		<form id="loginForm" action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get">
 	    		<div class="modal-body" >
 		    		<label for="login">Login</label>
-		    		<input name="login" id="login" type="text" class"" placeholder="login ..." class="input-xlarge" />
+		    		<input name="login" id="login" type="text" class="" placeholder="login ..." class="input-xlarge" />
 		    		<br/>
 		    		<label for="password">Password</label>
-		    		<input name="password" id="password" type="text" class"" placeholder="password ..." class="input-xlarge" />
+		    		<input name="password" id="password" type="password" class="" placeholder="password ..." class="input-xlarge" />
 		    		<a href="#" class="text-warning">Password Forgotten ?</a>
 		    	</div>
-				<div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
+				  
+          <div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
 				    <button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" data-dismiss="modal" aria-hidden="true">Close</button>
-				    <input type="submit" style="background-color:#FF9537;background-image:none;" class="btn btn-primary flatBouton">
+				    <input type="submit" style="background-color:#FF9537;background-image:none;" value="Login" class="btn btn-primary flatBouton">
 			    </div>
+
 			</form>
+      <img id="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:20%;">
     </div>
     <script src="<?= $this->BaseUrl();?>/js/jquery.js"></script>
     <script src="<?= $this->BaseUrl();?>/js/bootstrap.min.js"></script><!--
@@ -201,5 +204,31 @@
     <script src="./js/holder/holder.js"></script>
     <script src="./js/google-code-prettify/prettify.js"></script>
     <script src="./js/application.js"></script>-->
+    <script type="text/javascript">
+      $("#loginForm").submit(function() {
+        //alert('Handler for .submit() called.');
+        $(this).fadeTo('slow', 0.3);
+        $("#ajaxLoader").show();
+        $.ajax({
+              url:"<?= $this->url(array('controller'=>'index','action'=>'login'))?>",
+              
+              data:$(this).serialize(),
+              type:'Get',//by default get
+              success:function( msg ) {
+                alert( "Data Saved: " + msg );
+                $("#loginForm input[type=text]").css( "border-color", "#B94A48" );
+              },
+              error:function( msg ) {
+                alert( "Data Saved: " + msg );
+              }
+            }).done(function() { 
+              $("#loginForm").fadeTo('fast', 1);
+              $("#ajaxLoader").hide();
+            });
+        return false;
+      });
+        
+
+    </script>
 </body>
 </html>
