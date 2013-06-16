@@ -9,6 +9,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     public function _initDoctrine()
     {
+
         // include and register Doctrine's class loader
         require_once('Doctrine/Common/ClassLoader.php');
         $classLoader = new \Doctrine\Common\ClassLoader(
@@ -78,6 +79,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'basePath' => dirname(__FILE__),
         ));
         return $autoloader;
+    }
+
+    public function _initView(){
+        $this->bootstrap('layout');
+        $layout=$this->getResource('layout');
+        $view=$layout->getView();
+        $view->headTitle('WebShop');
     }
 }
 

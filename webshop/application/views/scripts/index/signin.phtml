@@ -4,26 +4,53 @@
       <div class="page-header">
             <h1>Sign Up Form <small>- Account managment interface</small></h1>
       </div>
-      <form action="<?= $this->url(array('controller'=>'index','action'=>'signin'));?>" method="post">
+      <form id="signInForm" action="<?= $this->url(array('controller'=>'index','action'=>'signin'));?>" method="post">
         <fieldset>
           <!--<legend></legend>-->
             <div class="row">
                <div class="span3">
-                <label for="login">Login</label>
-                <input name="login" id="login" type="text" class"" placeholder="login ..." class="input-xlarge" />
-                <label for="password">Password</label>
-                <input name="password" id="password" type="text" placeholder="password ..." class="input-large" />
-                <label for="passwordConf">Password Confirmation</label>
-                <input name="passwordConf" id="passwordConf" type="text" placeholder="Password Confirmation ..." class="input-large" />
+                <div class="control-group">
+                  <label for="login">Username</label>
+                  <input name="login" id="login" type="text" class"" placeholder="login ..." class="input-large" />
+                  <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                </div>
+                <div class="control-group">
+                  <label for="password">Password</label>
+                  <input name="password" id="password" type="text" placeholder="password ..." class="input-large" />
+                  <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                </div>
+                <div class="control-group">
+                  <label for="passwordConf">Password Confirmation</label>
+                  <input name="passwordConf" id="passwordConf" type="text" placeholder="Password Confirmation ..." class="input-large" />
+                  <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                </div>
               </div>
               <div class="span3 offset1">
-               <label for="lastName">Last Name</label>
-                <input name="lastName" id="lastName" type="text" placeholder="Last Name ..." class="input-large" />
-                 <label for="firstName">First Name</label>
-                <input name="firstName" id="firstName" type="text" placeholder="First Name ..." class="input-large" />
-                <label for="email">E-mail</label>
-                <input name="email" id="email" type="text" class"" placeholder="E-mail ..." class="input-xlarge" />
+                <div class="control-group">
+                  <label for="lastName">Last Name</label>
+                  <input name="lastName" id="lastName" type="text" placeholder="Last Name ..." class="input-large" />
+                  <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                </div>
+                <div class="control-group">
+                   <label for="firstName">First Name</label>
+                  <input name="firstName" id="firstName" type="text" placeholder="First Name ..." class="input-large" />
+                  <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                </div>
+                <div class="control-group">
+                  <label for="email">E-mail</label>
+                  <input name="email" id="email" type="text" class"" placeholder="E-mail ..." class="input-xlarge" />
+                  <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                </div>
               </div>
+
+            </div>
+            <div id="loginExiste" class="alert alert-error" style="margin:auto 10px 10px 0px;display:none;">
+                <button type="button" class="close">&times;</button>
+                <strong>Username already Existe!</strong> Try to use another username.
+            </div>
+            <div id="emailExiste" class="alert alert-error" style="margin:auto 10px 10px 0px;display:none;">
+                <button type="button" class="close">&times;</button>
+                <strong>Email already Existe!</strong> Try to use another email.
             </div>
             <div class="row form-actions">
                 <div class="span2 offset5">
@@ -32,6 +59,8 @@
             </div>
             
         </fieldset>
+        <img class="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:40%;"/>
       </form>
+
     </div>  
 </div> 

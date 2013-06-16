@@ -2,9 +2,8 @@
 
 
 /**
- * @Table(name="compte")
  * @Entity
- * @author anas
+ * @Table(name="compte",uniqueConstraints={@UniqueConstraint(name="unique_const", columns={"login","email"})},indexes={@Index(name="search_indx", columns={"login", "email"})})
  */
 class Application_Model_Compte implements \JsonSerializable
 {
@@ -16,17 +15,17 @@ class Application_Model_Compte implements \JsonSerializable
      */
     private $id;
     /**
-     * @Column(type="string",length=50,nullable=true)
+     * @Column(type="string",length=50,nullable=false)
      * @var string
      */
     private $login;
     /**
-     * @Column(type="string",length=50,nullable=true)
+     * @Column(type="string",length=50, nullable=false)
      * @var string
      */
     private $password;
     /**
-     * @Column(type="string",length=50,nullable=true)
+     * @Column(type="string",length=50,nullable=false)
      * @var string
      */
     private $email;
@@ -55,7 +54,12 @@ class Application_Model_Compte implements \JsonSerializable
      * @OneToMany(targetEntity="Application_Model_Quote",mappedBy="compte",cascade={"persist","remove"})
      */
     private $quote;
-
+     
+     /** 
+     * @var string
+     * @Column(type="string", columnDefinition="ENUM('user' , 'admin') NOT NULL") 
+     */
+    private $role='user';
     public function jsonSerialize()
     {
         $var = get_object_vars($this);

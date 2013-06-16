@@ -42,13 +42,18 @@ class Application_Model_Service_ServiceDao
      */
     public static function ajoutObjet($_em, $type, $requette)
     {
-        
-       // if (!Application_Model_Service_Utilities_VerificationDonnes::requetteArgumentNull($requette)) {
-        $listErreur = Application_Model_Service_Utilities_VerificationDonnes::verifCompte($requette);
+        $listErreur = Application_Model_Service_Utilities_DataValidation::signInCheck($requette);
         if (sizeof($listErreur) == 0) {
-            self::getObjetByNameRequest($_em, $type, $requette);
+            $compte=self::findMultiArgument($_em, "Compte", array('login = \'' . $requette->getPost('login') . '\''));
+            if(sizeof($compte)<=0){
+                $compte=self::findMultiArgument($_em, "Compte", array('email = \'' . $requette->getPost('email') . '\''));
+                if(sizeof($compte)<=0)
+                    self::persistObjetByNameRequest($_em, "Compte", $requette);
+                else
+                    array_push($listErreur, 'emailExiste');
+            }else
+                array_push($listErreur, 'loginExiste');
         }
-        //}
         return $listErreur;
     }
 
@@ -56,7 +61,7 @@ class Application_Model_Service_ServiceDao
      * jai besoin dans la requette de l'id du compte obligatoire
      */
 
-    public static function getObjetByNameRequest($_em, $nom, $requette)
+    public static function persistObjetByNameRequest($_em, $nom, $requette)
     {
         switch ($nom) {
             case "Compte":
@@ -248,27 +253,7 @@ class Application_Model_Service_ServiceDao
     {
     }
 
-    public static function login($_em, $requette)
-    {
-       //$listErreur = Application_Model_Service_Utilities_VerificationDonnes::verifCompte($requette);
-        //if (sizeof($listErreur) > 0) {
-            $login = $requette->getParam('login');
-            $listLogin = self::findMultiArgument($_em, "Compte", array('login = \'' . $login . '\''));
-            foreach ($listLogin as $compte) {
-                if (Application_Model_Utilities_PasswordHashe::isPasswordsMatch($requette->getParam('password'),$compte->password
-                    , 5)
-                ) {
-                    $session = new Zend_Session_Namespace('MySession');
-                    $session->compte = serialize($compte);
-                    return true;
-                }else
-                    return false;
-            }
-        //}
-    }
-
-    public
-    static function findMultiArgument($_em, $type, $arraycritere)
+    public static function findMultiArgument($_em, $type, $arraycritere)
     {
         /**
          * la forme de arracritre
@@ -292,7 +277,5 @@ class Application_Model_Service_ServiceDao
         $array = $query->getResult();
         $counter = 0;
         return $array;
-
-
     }
 }

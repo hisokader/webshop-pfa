@@ -11,6 +11,10 @@
     <link href="<?= $this->BaseUrl();?>/css/bootstrap.css" rel="stylesheet">
      <link href="<?= $this->BaseUrl();?>/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="<?= $this->BaseUrl();?>/css/style.css" rel="stylesheet">
+    <?php 
+      if (Zend_Session::sessionExists())  echo '<link href="'.$this->BaseUrl().'/css/userAdmin.css" rel="stylesheet">';
+    ?>
+
     <style type="text/css">
     
       /* Main marketing message and sign up button */
@@ -113,19 +117,17 @@
 					<li><a href="#">About</a></li>
 					<li class="horizSeparator">|</li>
           <?php 
-            
-            if (Zend_Session::sessionExists()) {
-                //Zend_Session::start();
-                $session = new Zend_Session_Namespace('MySession');
-                $userName = unserialize($session->compte);
+            $auth = Zend_Auth::getInstance();
+            if ($auth->hasIdentity()) {
+              $identity=$auth->getIdentity();
             ?> 
                 <li class="bordred">
                   <!-- Button to trigger modal -->
-                  <a href="#"><?=$userName->nom ;?></a>
+                  <a href="<?= $this->url(array('controller'=>'user','action'=>'index'));?>"><?=$identity->nom;?></a>
                 </li>
                 <li>
                   <!-- Button to trigger modal -->
-                  <a href="<?= $this->url(array('controller'=>'index','action'=>'logout'));?>"> Log Out</a>
+                  <a href="<?= $this->url(array('controller'=>'user','action'=>'logout'));?>"> Log Out</a>
                 </li>
              <?php   
 
@@ -133,7 +135,7 @@
             ?>
                 <li class="bordred">
                 <!-- Button to trigger modal -->
-                  <a href="#logInModal"  data-toggle="modal">LogIn</a>
+                  <a href="#logInModal" id="loginMenuLink" data-toggle="modal">LogIn</a>
                 </li>
                 <li style="border-color:#70CCB7;"class="bordred">
                 <!-- Button to trigger modal -->
@@ -186,73 +188,227 @@
 	 	</div>
  	</div>
 	</div><!-- footer -->
-
+    <?php 
+      if (!$auth->hasIdentity()) {
+    ?>
     <!-- Modal -->
     <div id="logInModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-header">
 		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		    <h3 id="myModalLabel">Please Login </h3>
 	    </div>
-	  		<form id="loginForm" action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get">
+	  		<form id="loginForm"  action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get">
 	    		<div class="modal-body" >
-		    		<label for="login">Login</label>
+		    		<label for="login">Username</label>
 		    		<input name="login" id="login" type="text" class="" placeholder="login ..." class="input-xlarge" />
 		    		<br/>
 		    		<label for="password">Password</label>
 		    		<input name="password" id="password" type="password" class="" placeholder="password ..." class="input-xlarge" /><br/>
-		    		<a href="#" class="text-warning">Password Forgotten ?</a>
+		    		<a href="#" id="passwRecoInte" class="text-warning">Password Forgotten ?</a>
+
 		    	</div>
-				  
+				  <div class="alert alert-error" style="margin:auto 10px 10px 10px;display:none;">
+              <button type="button" class="close">&times;</button>
+              <strong>Login error!</strong> your login or/and password is incorrect.
+          </div>
           <div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
 				    <button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" data-dismiss="modal" aria-hidden="true">Close</button>
 				    <input type="submit" style="background-color:#FF9537;background-image:none;" value="Login" class="btn btn-primary flatBouton">
 			    </div>
-
+          <img class="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:20%;">
 			</form>
-      <img id="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:20%;">
+
+      <form id="passRecovryForm" style="display:none;" action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get">
+          <div class="modal-body" >
+            <label for="emailPassRecover">Enter your email</label>
+            <input name="emailPassRecover" id="emailPassRecover" type="text" class="" placeholder="email ..." class="input-xlarge" />
+            <br/>
+          </div>
+          <div class="alert alert-error" style="margin:auto 10px 10px 10px;display:none;">
+              <button type="button" class="close">&times;</button>
+              <strong>Invalid email!</strong> this email is incorrect.
+          </div>
+          <div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
+            <!--<button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" id="backtologin">to login</button>-->
+            <input type="button" class="btn flatBouton" value="go back" id="prevtologin" style="background-color:#7ED1BE;background-image:none;"/>
+            <button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" data-dismiss="modal" aria-hidden="true">Close</button>
+            <input type="submit" style="background-color:#FF9537;background-image:none;" value="Send me an email" class="btn btn-primary flatBouton">
+          </div>
+          <img class="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:20%;">
+      </form>
+      
     </div>
+    <?php } ?> 
     <script src="<?= $this->BaseUrl();?>/js/jquery.js"></script>
-    <script src="<?= $this->BaseUrl();?>/js/bootstrap.min.js"></script><!--
-    <script src="./js/bootstrap-transition.js"></script>
-    <script src="./js/bootstrap-alert.js"></script>
-    <script src="./js/bootstrap-modal.js"></script>
-    <script src="./js/bootstrap-dropdown.js"></script>
-    <script src="./js/bootstrap-scrollspy.js"></script>
-    <script src="./js/bootstrap-tab.js"></script>
-    <script src="./js/bootstrap-tooltip.js"></script>
-    <script src="./js/bootstrap-popover.js"></script>
-    <script src="./js/bootstrap-button.js"></script>
-    <script src="./js/bootstrap-collapse.js"></script>
-    <script src="./js/bootstrap-carousel.js"></script>
-    <script src="./js/bootstrap-typeahead.js"></script>
-    <script src="./js/bootstrap-affix.js"></script>
-    <script src="./js/holder/holder.js"></script>
-    <script src="./js/google-code-prettify/prettify.js"></script>
-    <script src="./js/application.js"></script>-->
+    <script src="<?= $this->BaseUrl();?>/js/bootstrap.min.js"></script>
+
     <script type="text/javascript">
+      <?php 
+        if (!$auth->hasIdentity()) {
+      ?>
+     
       $("#loginForm").submit(function() {
         //alert('Handler for .submit() called.');
         $(this).fadeTo('slow', 0.3);
-        $("#ajaxLoader").show();
+        $(this).children(".ajaxLoader").show();
         $.ajax({
               url:"<?= $this->url(array('controller'=>'index','action'=>'login'))?>",
               
               data:$(this).serialize(),
               type:'Get',//by default get
               success:function( msg ) {
-                alert( "Data Saved: " + msg );
-                $("#loginForm input[type=text]").css( "border-color", "#B94A48" );
+                $("#loginForm .ajaxLoader").hide();
+                $("#loginForm").fadeTo('fast', 1);
+                if(msg=='login succes'){
+                  $('#logInModal').modal('hide');
+                  window.location.replace("<?= $this->url(array('controller'=>'index','action'=>'index'))?>");
+
+                }else{
+                  $("#loginForm input[type=text]").css( "border-color", "#B94A48" );
+                  $("#loginForm input[type=password]").css( "border-color", "#B94A48" );
+                  $("#loginForm .alert-error").show('slow');
+                }
               },
               error:function( msg ) {
-                alert( "Data Saved: " + msg );
+                alert( "Error : " + msg );
               }
-            }).done(function() { 
-              $("#loginForm").fadeTo('fast', 1);
-              $("#ajaxLoader").hide();
-            });
+            })
         return false;
       });
-        
+
+    $("#signInForm").submit(function() {
+        $(this).fadeTo('slow', 0.5);
+        $(this).children(".ajaxLoader").show();
+        $.ajax({
+              url:"<?= $this->url(array('controller'=>'index','action'=>'signin'))?>",
+              data:$(this).serialize(),
+              type:'Post',
+              success:function( msg ) {
+                $("#signInForm").children(".ajaxLoader").hide();
+                $("#signInForm").fadeTo('fast', 1);
+                $("#signInForm :input").each(function(){
+                    $(this).parent('div').removeClass('error');
+                    $(this).parent('div').children('span').hide();
+                });
+               $('#loginExiste').hide();
+               $('#emailExiste').hide();
+                var errorObject=JSON.parse(msg) ;
+                if(errorObject.error.length>0){
+                  if(errorObject.error[0]=='loginExiste'){
+                    $('#loginExiste').show();
+                    $('#login').parent('div').addClass('error');
+                  }else if(errorObject.error[0]=='emailExiste' ){
+                      $('#emailExiste').show();
+                      $('#email').parent('div').addClass('error');
+                  }else{
+                   var index;
+                  for (index = 0; index < errorObject.error.length; ++index) {
+                    $('#'+errorObject.error[index]).parent('div').addClass('error');
+                     $('#'+errorObject.error[index]).parent('div').children('span').show();
+                    //console.log(index +' - '+errorObject.error[index]+'\n');
+                  }
+                }
+                  
+                }else
+                   window.location.replace("<?= $this->url(array('controller'=>'index','action'=>'index'))?>");
+              },
+              error:function( msg ) {
+                alert( "Error : " + msg );
+              }
+            })
+        return false;
+      });
+      $("#passRecovryForm").submit(function() {
+        //alert("jfuy");
+        $(this).fadeTo('slow', 0.7);
+        $(this).children(".ajaxLoader").show();
+         $("#passRecovryForm button,#passRecovryForm input").attr('disabled','disabled');
+        /*$.ajax({
+              url:"<?= $this->url(array('controller'=>'index','action'=>'signin'))?>",
+              data:$(this).serialize(),
+              type:'Post',
+              success:function( msg ) {
+                $("#signInForm").children(".ajaxLoader").hide();
+                $("#signInForm").fadeTo('fast', 1);
+                $("#signInForm :input").each(function(){
+                    $(this).parent('div').removeClass('error');
+                    $(this).parent('div').children('span').hide();
+                });
+               
+                var errorObject=JSON.parse(msg) ;
+                if(errorObject.error.length>0){
+                  
+                  var index;
+                  for (index = 0; index < errorObject.error.length; ++index) {
+                    $('#'+errorObject.error[index]).parent('div').addClass('error');
+                     $('#'+errorObject.error[index]).parent('div').children('span').show();
+                    //console.log(index +' - '+errorObject.error[index]+'\n');
+                  }
+                }else
+                   window.location.replace("<?= $this->url(array('controller'=>'index','action'=>'index'))?>");
+              },
+              error:function( msg ) {
+                alert( "Error : " + msg );
+              }
+            })*/
+        return false;
+      });
+      $("#passwRecoInte").click(function(){
+        $("#loginForm").hide();
+        $("#passRecovryForm").fadeIn('slow');
+        $("#myModalLabel").text("Password forgotten ");
+      });
+
+      $("#prevtologin").click(function(){
+        $("#passRecovryForm").hide();
+        $("#loginForm").fadeIn('slow');
+        $("#myModalLabel").text("Please Login ");
+      });
+
+      $('#loginMenuLink').click(function(){
+        $("#loginForm button,#loginForm input").removeAttr('disabled');
+        $("#loginForm").children(".ajaxLoader").hide();
+        $("#loginForm").fadeTo('fast', 1);
+
+        $("#passRecovryForm button,#passRecovryForm input").removeAttr('disabled');
+        $("#passRecovryForm").children(".ajaxLoader").hide();
+        $("#passRecovryForm").fadeTo('fast', 1);
+
+        $("#passRecovryForm").hide();
+        $("#loginForm").fadeIn('slow');
+        $("#myModalLabel").text("Please Login ");
+      });
+      //////////////////////////////////////////
+      $("#loginFormAdmin").submit(function() {
+        //alert('Handler for .submit() called.');
+        $(this).fadeTo('slow', 0.3);
+        $(this).children(".ajaxLoader").show();
+        $.ajax({
+              url:"<?= $this->url(array('controller'=>'Admin','action'=>'adminlogin'))?>",
+              
+              data:$(this).serialize(),
+              type:'Get',//by default get
+              success:function( msg ) {
+                $("#loginFormAdmin").children(".ajaxLoader").hide();
+                $("#loginFormAdmin").fadeTo('fast', 1)
+                if(msg=='login succes'){
+                  window.location.replace("<?= $this->url(array('controller'=>'admin','action'=>'index'))?>");
+                }else{
+                  $("#loginFormAdmin input[type=text]").css( "border-color", "#B94A48" );
+                  $("#loginFormAdmin input[type=password]").css( "border-color", "#B94A48" );
+                  $("#loginFormAdmin .alert-error").show('slow');
+                }
+              },
+              error:function( msg ) {
+                alert( "Error : " + msg );
+              }
+            })
+        return false;
+      });
+    <?php } ?>
+      $(".close").click(function(){
+        $(this).parent(".alert").fadeOut('fast');
+      });
 
     </script>
 </body>

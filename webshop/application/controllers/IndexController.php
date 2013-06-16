@@ -23,37 +23,30 @@ class IndexController extends Zend_Controller_Action
             //Zend_Session::rememberMe(seconde);
             //Zend_Session::forgetMe();demande au navigateur de detruire la session apres l'arret du navigateur
             //sessionExists()
-
-
-            if(Application_Model_Service_ServiceDao::login($this->_em, $this->getRequest())){
+            $auth = Zend_Auth::getInstance();
+            $result= $auth->authenticate(new Webshop_Auth_Adapter($this->getRequest()->getParam('login'),$this->getRequest()->getParam('password'),'user'));
+            if($result->isValid()){
                 echo "login succes";
-            }else
-            echo "login failed";
-            //sleep(3);
-        } else
-            echo "ajax request non";
+            }else{
+                $msgs=$result->getMessages();
+                echo $msgs[0];
+            }
+                
+        } 
     }
 
     public function signinAction()
     {
-        //echo $this->getRequest()->getPost("login");
-        $reponse = Application_Model_Service_ServiceDao::ajoutObjet($this->_em, "Compte", $this->getRequest());
-        //$this->indexAction();
-        var_dump($reponse);
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            //sleep(4);
+            $this->_helper->viewRenderer->setNoRender();
+            $this->_helper->layout()->disableLayout();
+            //echo $this->getRequest()->getPost("login");
+            $reponse = Application_Model_Service_ServiceDao::ajoutObjet($this->_em, "Compte", $this->getRequest());
+            //$this->indexAction();
+            echo json_encode(array("error"=>$reponse));
+        }
     }
-
-    public function logoutAction()
-    {
-        
-        if (Zend_Session::sessionExists()) {
-            //Zend_Session::namespaceUnset('MySession');
-            Zend_Session::destroy(true,true);
-            //Zend_Session::regenerateId();
-            //Zend_Session::forgetMe();
-       }
-       $this->_redirect("index");
-    }
-
 
 }
 

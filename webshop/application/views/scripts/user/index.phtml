@@ -1,0 +1,164 @@
+ <div class="content row" >
+ 	<div id="inscriptionForm" class="span9 offset2">
+          <div class="page-header">
+            <h1>My Account <small>- Account managment interface</small></h1>
+          </div>
+          <div class="tabbable">
+            <ul class="nav nav-tabs">
+              <li><a href="#tab1" data-toggle="tab">My Web Sites</a></li>
+              <li><a href="#tab2" data-toggle="tab">Personal Informations</a></li>
+              <li class="active"><a href="#tab3" data-toggle="tab">Web Site Managment</a></li>
+              <li><a href="#tab4" data-toggle="tab">New Web Site</a></li>
+            </ul>
+            <div class="tab-content">
+            	
+ 		<!-- **************************************************************************************** -->
+
+              <div class="tab-pane row" id="tab1">
+                <div class="page-header text-center">
+                  <h2>My Web Sites <small>- sites managment interface</small></h2>
+                </div>
+
+                <table class="table table-bordered">
+                  <!--<caption>My Sites</caption>-->
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Rubrique</th>
+                      <th>Creation date</th>
+                      <th>Laste modification date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a href="#">Math Tuts</a></td>
+                      <td>Enseignent</td>
+                      <td>12/04/2012</td>
+                      <td>12/01/2012</td>
+                      <td><a href="#"><span class="icon-wrench"></i></a><a href="#"><span class="icon-remove-sign"></i></a><a href="#"><span class="  icon-ok-sign"></i></a><a href="#"><span class="icon-download-alt"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#">NanoSyborg</a></td>
+                      <td>Prject</td>
+                      <td>12/07/2012</td>
+                      <td>12/01/2013</td>
+                      <td><a href="#"><span class="icon-wrench"></i></a><a href="#"><span class="icon-remove-sign"></i></a><a href="#"><span class="icon-minus-sign"></i></a><a href="#"><span class="icon-download-alt"></span></a></td>
+                    </tr>
+                     <tr>
+                      <td><a href="#">GI-JOE Entreprise</a></td>
+                      <td>Entreprise</td>
+                      <td>15/01/2013</td>
+                      <td>02/06/2013</td>
+                      <td><a href="#"><span class="icon-wrench"></i></a><a href="#"><span class="icon-remove-sign"></i></a><a href="#"><span class="icon-minus-sign"></i></a><a href="#"><span class="icon-download-alt"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#">BigBang-Simulator</a></td>
+                      <td>Prject</td>
+                      <td>12/7/2012</td>
+                      <td>12/1/2013</td>
+                      <td><a href="#"><span class="icon-wrench"></i></a><a href="#"><span class="icon-remove-sign"></i></a><a href="#"><span class="  icon-ok-sign"></i></a><a href="#"><span class="icon-download-alt"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="5"><a href="">Add a new web site ...</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- tab 1-->
+
+			  <div class="tab-pane" id="tab2">
+                <div class="span8">
+                  <div class="page-header text-center">
+                    <h2>Personal Informations <small>- Account managment interface</small></h2>
+                  </div>
+                  <form>
+                    <fieldset>
+                      <!--<legend>Sign Up Form </legend>-->
+                        <div class="row">
+                           <div class="span3 offset1">
+                            <label for="login">Login</label>
+                            <input name="login" id="login" type="text" class"" placeholder="Hisokader" class="input-xlarge" disabled/>
+                            <label for="password">Password</label>
+                            <input name="password" id="password" type="password" placeholder="password ..." class="input-large" />
+                            <label for="passwordConf">Password Confirmation</label>
+                            <input name="passwordConf" id="passwordConf" type="password" placeholder="Password Confirmation ..." class="input-large" />
+                          </div>
+                          <div class="span3 offset1">
+                           <label for="lastName">Last Name</label>
+                            <input name="lastName" id="lastName" type="text" placeholder="Bouazza" class="input-large" />
+                             <label for="firstName">First Name</label>
+                            <input name="firstName" id="firstName" type="text" placeholder="Abdelkader" class="input-large" />
+                            <label for="email">E-mail</label>
+                            <input name="email" id="email" type="text" class"" placeholder="abdelkader.bouazza@gmail.com" class="input-xlarge" />
+                          </div>
+                        </div>
+                        <div class="row form-actions">
+                            <div class="span2 offset6">
+                              <input type="submit" class="flatBouton btn-large btn-block" value="Submit"/>
+                            </div>
+                        </div>  
+                    </fieldset>
+                   </form>
+                 </div>  
+              	</div><!-- tab 2-->
+
+ 		<!-- **************************************************************************************** -->
+
+			<div class="tab-pane" id="tab4">
+                <div class="span8">
+                  <div class="page-header text-center">
+                    <h2>New Web Site<small> - Add a new Web Site</small></h2>
+                  </div>
+                  <form>
+                    <fieldset>
+                      <!--<legend>Sign Up Form </legend>-->
+                      
+                        <div class="row">
+                           <div class="span3 offset1">
+                            <label for="categorie">Categories</label>
+                            <select id="categorie" name="categorie">
+                              <option>Enseignent</option>
+                              <option>Entreprise</option>
+                              <option>Project</option>
+                              <option>Ecole</option>
+                            </select>
+                            <label for="siteTitle">Title</label>
+                            <input name="siteTitle" id="siteTitle" type="text" placeholder="Site title ..." class="input-large" />
+                             <label for="siteURL">URL</label>
+                            <input name="siteURL" id="siteURL" type="text" placeholder="Site URL ..." class="input-xlarge" /><br/>
+                            <span class=" text-info help-blockx">the URL that your web site will be requested by <small class="muted">( <strong>ex : www.webshop.ma/URL</strong></small>).</span><br/><br/>
+                           
+                          </div>
+                          <div class="span3 offset1">
+                              <label for="sitePhone">Phone</label>
+                              <input name="sitePhone" id="sitePhone" type="text" placeholder="+212611937303 ..." class="input-large" />
+                               <label for="siteEmail">E-mail</label>
+                              <input name="siteEmail" id="siteEmail" type="text" class"" placeholder="Site Email" class="input-xlarge" /><br/>
+                            <span class=" text-info help-blockx">If lifted blanck we'll use your Account email <small class="muted">( <strong>abdelkader.bouazza@gmail.com</strong></small>).</span><br/><br/>
+                               <label for="siteAdresse">Adresse</label>
+                               <textarea rows="3"  name="siteAdresse" id="siteAdresse" type="text" class="input-xlarge" placeholder="site adresse ..."></textarea>
+                          </div>
+                        </div>
+                       <div class="row form-actions" style="height:0px;"></div> 
+                       <div class="row">
+                          <div class="span2">
+                            <a href="#" id="btnStepPrev" class="flatBouton"><span class="icon-chevron-left icon-white"></span> Previeuse</a>
+                          </div>
+                          <div class="span2 offset1">
+                            <p class="lead" style="color:#2E3133;font-size:2.2em;margin-left:30px;">Step <span id="stepAchieved">1</span>/<span id="stepRemain">5</span></p>
+                          </div>
+                          <div class="span2 offset1">
+                            <a href="#" id="btnStepNext"class="flatBouton">Next <span class="icon-chevron-right icon-white"></span></a>
+                          </div>
+                      </div>
+                    </fieldset>
+                  </form>
+                </div> 		
+              </div><!-- tab 4-->
+
+ 		<!-- **************************************************************************************** -->
+
+			</div><!-- tab-content-->
+        </div><!-- tabbable -->
+    </div><!-- inscription -->
+ </div>
