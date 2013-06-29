@@ -22,7 +22,7 @@ class Webshop_Utilities_PasswordHashe{
         return $string;
     }
 
-    public static function passwordHashing($password,$saltLenght=20){
+    public static function passwordHashing($password,$saltLenght=5){
     	if (isset($password)) {
     		$randomString=self::randomString($saltLenght);
     		return $randomString.sha1($randomString.$password);
@@ -30,16 +30,16 @@ class Webshop_Utilities_PasswordHashe{
 		else
 			return null;
     }
-    public static function isPasswordsMatch($passwordInserted,$loginPasswordHashed,$saltLenght=20){
-    	//if (isset($passwordInserted) && isset($loginPasswordHashed)) {
+    public static function isPasswordsMatch($passwordInserted,$loginPasswordHashed,$saltLenght=5){
+    	if (isset($passwordInserted) && isset($loginPasswordHashed)) {
     		$passwordHashed=substr($loginPasswordHashed, 0, $saltLenght). sha1(substr($loginPasswordHashed, 0, $saltLenght).$passwordInserted) ;
             if(strcmp($passwordHashed,$loginPasswordHashed)==0)
     			return true;
     		else
     			return false;
-    	//}
-		//else
-		//	return null;
+    	}
+		else
+			return false;
     }
 
 

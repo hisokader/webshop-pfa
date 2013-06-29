@@ -12,7 +12,8 @@
      <link href="<?= $this->BaseUrl();?>/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="<?= $this->BaseUrl();?>/css/style.css" rel="stylesheet">
     <?php 
-      if (Zend_Session::sessionExists())  echo '<link href="'.$this->BaseUrl().'/css/userAdmin.css" rel="stylesheet">';
+    $auth = Zend_Auth::getInstance();
+      if ($auth->hasIdentity())  echo '<link href="'.$this->BaseUrl().'/css/userAdmin.css" rel="stylesheet">';
     ?>
 
     <style type="text/css">
@@ -117,7 +118,7 @@
 					<li><a href="#">About</a></li>
 					<li class="horizSeparator">|</li>
           <?php 
-            $auth = Zend_Auth::getInstance();
+            
             if ($auth->hasIdentity()) {
               $identity=$auth->getIdentity();
             ?> 
@@ -207,9 +208,13 @@
 		    		<a href="#" id="passwRecoInte" class="text-warning">Password Forgotten ?</a>
 
 		    	</div>
-				  <div class="alert alert-error" style="margin:auto 10px 10px 10px;display:none;">
-              <button type="button" class="close">&times;</button>
-              <strong>Login error!</strong> your login or/and password is incorrect.
+				  <div id="logIncorrect" class="alert alert-error" style="margin:auto 10px 10px 10px;display:none;">
+              <button type="button" class="close" aria-hidden="true">&times;</button>
+              <strong>Login error!</strong> your login or/and password are incorrect.
+          </div>
+          <div id="logInactive" class="alert alert-error" style="margin:auto 10px 10px 10px;display:none;">
+              <button type="button" class="close" aria-hidden="true">&times;</button>
+              <strong>Login error!</strong> this account is not active yet, please check your email for an acctivation message from WebShop.
           </div>
           <div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
 				    <button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -218,10 +223,10 @@
           <img class="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:20%;">
 			</form>
 
-      <form id="passRecovryForm" style="display:none;" action"<?= $this->url(array('controller'=>'index','action'=>'login'));?>" method="get">
+      <form id="passRecovryForm" style="display:none;" action"<?= $this->url(array('controller'=>'index','action'=>'passwordrecovry'));?>" method="get">
           <div class="modal-body" >
-            <label for="emailPassRecover">Enter your email</label>
-            <input name="emailPassRecover" id="emailPassRecover" type="text" class="" placeholder="email ..." class="input-xlarge" />
+            <label for="emailRecover">Enter your email</label>
+            <input name="emailRecover" id="emailPassRecover" type="text" placeholder="email ..." class="input-xlarge" />
             <br/>
           </div>
           <div class="alert alert-error" style="margin:auto 10px 10px 10px;display:none;">
@@ -229,10 +234,9 @@
               <strong>Invalid email!</strong> this email is incorrect.
           </div>
           <div class="modal-footer" style="background-color:#FFF;padding-top:30px;">
-            <!--<button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" id="backtologin">to login</button>-->
             <input type="button" class="btn flatBouton" value="go back" id="prevtologin" style="background-color:#7ED1BE;background-image:none;"/>
             <button class="btn flatBouton" style="background-color:#7ED1BE;background-image:none;" data-dismiss="modal" aria-hidden="true">Close</button>
-            <input type="submit" style="background-color:#FF9537;background-image:none;" value="Send me an email" class="btn btn-primary flatBouton">
+            <input type="submit" style="background-color:#FF9537;background-image:none;" value="Send me an email" class="btn btn-primary flatBouton"/>
           </div>
           <img class="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:20%;">
       </form>
@@ -259,6 +263,8 @@
               success:function( msg ) {
                 $("#loginForm .ajaxLoader").hide();
                 $("#loginForm").fadeTo('fast', 1);
+                $("#logInactive").hide();
+                    $("#logIncorrect").hide();
                 if(msg=='login succes'){
                   $('#logInModal').modal('hide');
                   window.location.replace("<?= $this->url(array('controller'=>'index','action'=>'index'))?>");
@@ -266,7 +272,10 @@
                 }else{
                   $("#loginForm input[type=text]").css( "border-color", "#B94A48" );
                   $("#loginForm input[type=password]").css( "border-color", "#B94A48" );
-                  $("#loginForm .alert-error").show('slow');
+                  if(msg=='not activeted')
+                    $("#logInactive").show('slow');
+                  else                    
+                    $("#logIncorrect").show('slow');
                 }
               },
               error:function( msg ) {
@@ -318,39 +327,29 @@
             })
         return false;
       });
-      $("#passRecovryForm").submit(function() {
-        //alert("jfuy");
+      $("#passRecovryForm").on("submit",function() {
         $(this).fadeTo('slow', 0.7);
         $(this).children(".ajaxLoader").show();
-         $("#passRecovryForm button,#passRecovryForm input").attr('disabled','disabled');
-        /*$.ajax({
-              url:"<?= $this->url(array('controller'=>'index','action'=>'signin'))?>",
+        $.ajax({
+              url:"<?= $this->url(array('controller'=>'index','action'=>'passwordrecovry'))?>",
               data:$(this).serialize(),
-              type:'Post',
+              type:'Get',
               success:function( msg ) {
-                $("#signInForm").children(".ajaxLoader").hide();
-                $("#signInForm").fadeTo('fast', 1);
-                $("#signInForm :input").each(function(){
+                $("#passRecovryForm").children(".ajaxLoader").hide();
+                $("#passRecovryForm").fadeTo('fast', 1);
+                $("#passRecovryForm :input").each(function(){
                     $(this).parent('div').removeClass('error');
                     $(this).parent('div').children('span').hide();
                 });
-               
-                var errorObject=JSON.parse(msg) ;
-                if(errorObject.error.length>0){
-                  
-                  var index;
-                  for (index = 0; index < errorObject.error.length; ++index) {
-                    $('#'+errorObject.error[index]).parent('div').addClass('error');
-                     $('#'+errorObject.error[index]).parent('div').children('span').show();
-                    //console.log(index +' - '+errorObject.error[index]+'\n');
-                  }
-                }else
-                   window.location.replace("<?= $this->url(array('controller'=>'index','action'=>'index'))?>");
-              },
+                   if(msg=='success recovry'){
+                    window.location.replace("<?= $this->url(array('controller'=>'index','action'=>'passwordrecovry'))?>");
+                   }else
+                      $("#passRecovryForm .alert-error").show('slow');
+                 },
               error:function( msg ) {
                 alert( "Error : " + msg );
               }
-            })*/
+            })
         return false;
       });
       $("#passwRecoInte").click(function(){
@@ -366,7 +365,7 @@
       });
 
       $('#loginMenuLink').click(function(){
-        $("#loginForm button,#loginForm input").removeAttr('disabled');
+        //$("#loginForm button,#loginForm input").removeAttr('disabled');
         $("#loginForm").children(".ajaxLoader").hide();
         $("#loginForm").fadeTo('fast', 1);
 
@@ -384,7 +383,7 @@
         $(this).fadeTo('slow', 0.3);
         $(this).children(".ajaxLoader").show();
         $.ajax({
-              url:"<?= $this->url(array('controller'=>'Admin','action'=>'adminlogin'))?>",
+              url:"<?= $this->url(array('controller'=>'index','action'=>'adminlogin'))?>",
               
               data:$(this).serialize(),
               type:'Get',//by default get
@@ -404,6 +403,17 @@
               }
             })
         return false;
+      });
+    $("#adminPasswRecoInte").click(function(){
+        $("#loginFormAdmin").hide();
+        $("#adminPassRecovryForm").fadeIn('slow');
+        $("#loginAdmin .page-header").html("<h1>Recovry password <small>- Recovry password for Administrator of WebShop</small></h1>");
+        return false;
+      });
+    $("#adminPrevtologin").click(function(){
+        $("#adminPassRecovryForm").hide();
+        $("#loginFormAdmin").fadeIn('slow');
+        $("#loginAdmin .page-header").html("<h1>Login Form <small>- Login As Administrator of WebShop</small></h1>");
       });
     <?php } ?>
       $(".close").click(function(){

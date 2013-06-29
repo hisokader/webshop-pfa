@@ -69,7 +69,7 @@ class Application_Model_Service_ServiceDao
                 $tmp->email = $requette->getPost('email'); //$requette->email;
                 $tmp->nom = $requette->getPost('lastName'); //$requette->nom;
                 $tmp->prenom = $requette->getPost('firstName'); //$requette->prenom;
-                $tmp->password = Application_Model_Utilities_PasswordHashe::passwordHashing($requette->getPost('password'), 5);
+                $tmp->password = Webshop_Utilities_PasswordHashe::passwordHashing($requette->getPost('password'), 5);
                 $tmp->login = $requette->getPost('login'); //$requette->login;
                 $tmp->isActivated = false; //$requette->getPost('isActivated'); //$requette->isActivated;
                 $_em->persist($tmp);
@@ -249,10 +249,29 @@ class Application_Model_Service_ServiceDao
         }
     }
 
-    public static function getAllList()
+    public static function passwordUpdate($_em, $email,$password)
     {
+        $password=Webshop_Utilities_PasswordHashe::passwordHashing($password);
+        $q = $_em->createQuery("update Application_Model_Compte cmp set cmp.password = '".$password."' where cmp.email='".$email."'");
+        return $q->execute();
     }
 
+    public static function getAccountActivationCode($_em,$email)
+    {
+        $account=self::findMultiArgument($_em,'Compte',array("email='".$email."'"));
+        if(sizeof($account)==1){
+            $string=$account[0]->prenom.'78a1'.$account[0]->password;
+            return substr($string, (strlen($string) - 1)/2,(strlen($string) - 1) );
+        }else
+            return $email;
+         
+    }
+
+    public static function activatingAccount($_em,$email)
+    {
+        $q = $_em->createQuery("update Application_Model_Compte cmp set cmp.isActivated = 1 where cmp.email='".$email."'");
+        return $q->execute();
+    }
     public static function findMultiArgument($_em, $type, $arraycritere)
     {
         /**

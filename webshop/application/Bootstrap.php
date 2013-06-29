@@ -87,5 +87,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view=$layout->getView();
         $view->headTitle('WebShop');
     }
+    public function _initPlugins(){
+        $front = Zend_Controller_Front::getInstance();
+        $acl = new Webshop_Acl_Acl();
+        $front->registerPlugin(new Webshop_Plugins_Acl($acl));
+    }
 }
 

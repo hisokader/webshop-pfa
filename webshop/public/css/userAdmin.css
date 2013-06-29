@@ -1,0 +1,65 @@
+.content{
+      background-color:#F7F5F2;
+
+    }
+    .content table{
+      background-color: white;
+    }
+    .content table caption{
+      color:#777E83;
+      font-size: 1.8em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+     .content table thead,.content table tbody tr:last-child{
+      background-color:#F7F5F2;
+    }
+    .content table thead tr th{
+      text-align: center;
+      color:#F38A34;
+    }
+     .content table tbody tr td{
+      font-size: 1.1em;
+      text-align: center;
+    }
+    
+    .content table tbody tr td a{
+      color:#59C2AB;
+    }
+     .content table tbody tr td:nth-child(5) a{
+      margin: auto 5px auto 5px;
+    }
+    /***************************************/
+    #inscriptionForm{
+      margin-bottom:30px;
+    }
+    #inscriptionForm form legend{
+      font-size: 2em;
+      font-weight: bold;
+
+    } 
+    .tab-content{
+      overflow: visible;
+    }
+      #stepAchieved{
+        color: #F28933;
+      }
+     #stepRemain{
+      color: #5AC3AC;
+     } 
+    #btnStepPrev{
+      padding:14px 20px 14px 20px;
+      background-color:#DE751E;
+    }
+    #btnStepNext{
+      margin-left:30px;padding:14px 40px 14px 40px;
+      background-color:#45AE96;
+    }
+     #btnStepPrev:link{
+      color: white;
+      text-decoration: none;
+    }
+    #btnStepNext:link{
+      color: white;
+      text-decoration: none;
+    }

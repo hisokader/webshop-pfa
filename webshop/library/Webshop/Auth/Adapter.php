@@ -26,6 +26,9 @@ class Webshop_Auth_Adapter implements Zend_Auth_Adapter_Interface
 		if(strcmp($compte->role,$this->_connectedAs)!=0) {
 			return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_AMBIGUOUS,$this->_username,array("not admin"));
 		}
+		if($compte->isActivated==0) {
+			return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_AMBIGUOUS,$this->_username,array("not activeted"));
+		}
 			return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS,$compte);
 	}
 }
