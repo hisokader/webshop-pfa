@@ -1,8 +1,8 @@
 <?php
-class Application_Model_Service_Utilities_DataValidation
+class Webshop_Utilities_DataValidation
 {
 
-    public static function signInCheck($compte)
+    public static function compteCheck($compte)
     {
         $loginValid = new Zend_Validate();
         $loginValid->addValidator(new Zend_Validate_Alnum())

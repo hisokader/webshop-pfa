@@ -71,33 +71,53 @@
                   <div class="page-header text-center">
                     <h2>Personal Informations <small>- Account managment interface</small></h2>
                   </div>
-                  <form>
+                  <form id="userUpdate" method="post" action="<?= $this->url(array('controller'=>'user','action'=>'updateuser'));?>">
                     <fieldset>
                       <!--<legend>Sign Up Form </legend>-->
                         <div class="row">
-                           <div class="span3 offset1">
-                            <label for="login">Login</label>
-                            <input name="login" id="login" type="text" class"" placeholder="Hisokader" class="input-xlarge" disabled/>
-                            <label for="password">Password</label>
-                            <input name="password" id="password" type="password" placeholder="password ..." class="input-large" />
-                            <label for="passwordConf">Password Confirmation</label>
-                            <input name="passwordConf" id="passwordConf" type="password" placeholder="Password Confirmation ..." class="input-large" />
-                          </div>
-                          <div class="span3 offset1">
-                           <label for="lastName">Last Name</label>
-                            <input name="lastName" id="lastName" type="text" placeholder="Bouazza" class="input-large" />
-                             <label for="firstName">First Name</label>
-                            <input name="firstName" id="firstName" type="text" placeholder="Abdelkader" class="input-large" />
-                            <label for="email">E-mail</label>
-                            <input name="email" id="email" type="text" class"" placeholder="abdelkader.bouazza@gmail.com" class="input-xlarge" />
-                          </div>
-                        </div>
+                          <input type="hidden" name="id" value="<?= $this->identity->id;?>"/>
+                            <div class="span3 offset1">
+                              <div class="control-group">
+                                <label for="login">Username</label>
+                                <input name="login" id="login" type="text" placeholder="<?= $this->identity->login;?>" class="input-large" disabled/>
+                              </div>
+                              <div class="control-group">
+                                <label for="password">Password</label>
+                                <input name="password" id="password" type="text" placeholder="password ..." class="input-large" />
+                                <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                              </div>
+                              <div class="control-group">
+                                <label for="passwordConf">Password Confirmation</label>
+                                <input name="passwordConf" id="passwordConf" type="text" placeholder="Password Confirmation ..." class="input-large" />
+                                <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                              </div>
+                            </div>
+                            <div class="span3">
+                              <div class="control-group">
+                                <label for="lastName">Last Name</label>
+                                <input name="lastName" id="lastName" type="text" placeholder="<?= $this->identity->nom;?>" class="input-large" />
+                                <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                              </div>
+                              <div class="control-group">
+                                 <label for="firstName">First Name</label>
+                                <input name="firstName" id="firstName" type="text" placeholder="<?= $this->identity->prenom;?>" class="input-large" />
+                                <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                              </div>
+                              <div class="control-group">
+                                <label for="email">E-mail</label>
+                                <input name="email" id="email" type="text"placeholder="<?= $this->identity->email;?>" class="input-xlarge" disabled/>
+                                <span style="display:none;" class="help-inline">Something may have gone wrong</span>
+                              </div>
+                            </div>
+                          </div> 
                         <div class="row form-actions">
                             <div class="span2 offset6">
                               <input type="submit" class="flatBouton btn-large btn-block" value="Submit"/>
                             </div>
-                        </div>  
+                        </div>
+
                     </fieldset>
+                    <img class="ajaxLoader" src="<?= $this->BaseUrl();?>/img/ajaxLoader.gif" style="display:none;position:absolute;top:50%;left:40%;"/>
                    </form>
                  </div>  
               	</div><!-- tab 2-->

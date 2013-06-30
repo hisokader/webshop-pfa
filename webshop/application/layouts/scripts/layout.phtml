@@ -110,7 +110,7 @@
  	<div class="header">
 	 	 	<div id="logo">
 				<img src="<?= $this->BaseUrl();?>/img/logo.png"/>
-			</div>
+			</div> 
 	 	 	<div id="menu-heder">
 				<ul class="nav nav-pills pull-right">
 					<li><a href="<?= $this->url(array('controller'=>'index','action'=>'index'));?>">Home</a></li>
@@ -415,7 +415,58 @@
         $("#loginFormAdmin").fadeIn('slow');
         $("#loginAdmin .page-header").html("<h1>Login Form <small>- Login As Administrator of WebShop</small></h1>");
       });
-    <?php } ?>
+    <?php }else{ ?>
+      $("#userUpdate").on("submit",function() {
+        var changed=false;
+        $("#userUpdate input[type=text], #userUpdate input[type=password]").each(function(){
+          if($(this).val()!="") changed=true;
+        });
+
+        if(changed){
+           $("#userUpdate :input").each(function(){
+                      $(this).parent('div').removeClass('error');
+                      $(this).parent('div').children('span').hide();
+            });
+        $(this).fadeTo('slow', 0.7);
+        $(this).children(".ajaxLoader").show();
+        $.ajax({
+              url:"<?= $this->url(array('controller'=>'user','action'=>'updateuser'))?>",
+              data:$(this).serialize(),
+              type:'post',
+              success:function( msg ) {
+                if(msg=="success"){
+                  $("#userUpdate :input[type!=submit]").each(function(){
+                    if(($(this).attr('id')!='email' || $(this).attr('id')!='login')&&$(this).val()!=''){
+                      $(this).attr('placeholder',$(this).val());
+                      $(this).val('');
+                    }
+                  });
+                }else{
+                  $("#userUpdate").children(".ajaxLoader").hide();
+                  $("#userUpdate").fadeTo('fast', 1);
+                 
+                  var errorObject=JSON.parse(msg) ;
+                  if(errorObject.error.length>0){
+                     var index;
+                    for (index = 0; index < errorObject.error.length; ++index) {
+                      if(((errorObject.error[index]!='email' || errorObject.error[index]!='login') || errorObject.error[index]=="passwordConf")&& $('#'+errorObject.error[index]).val()!=''){
+                        $('#'+errorObject.error[index]).parent('div').addClass('error');
+                        $('#'+errorObject.error[index]).parent('div').children('span').show();
+                      }
+                      
+                     }
+                   }
+                  }
+               },
+              error:function( msg ) {
+                alert( "Error : " + msg );
+              }
+            })
+        }  
+        return false;
+      });
+
+       <?php } ?>
       $(".close").click(function(){
         $(this).parent(".alert").fadeOut('fast');
       });

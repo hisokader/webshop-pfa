@@ -15,7 +15,7 @@ class Webshop_Auth_Adapter implements Zend_Auth_Adapter_Interface
 	}
 	public function authenticate()
 	{
-		$listLogin = Application_Model_Service_ServiceDao::findMultiArgument($this->_em, "Compte", array('login = \'' . $this->_username. '\''));
+		$listLogin = Webshop_Dao_ServiceDao::findMultiArgument($this->_em, "Compte", array('login = \'' . $this->_username. '\''));
         if(sizeof($listLogin)<=0) {
 			return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND,$this->_username,array("login failed"));
 		}

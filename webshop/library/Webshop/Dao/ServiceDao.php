@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Application_Model_Service_ServiceDao
+class Webshop_Dao_ServiceDao
 {
     /**
      * fonction de recherche de nimporte quelle objet dans la classe avec un seul critere
@@ -42,7 +42,7 @@ class Application_Model_Service_ServiceDao
      */
     public static function ajoutObjet($_em, $type, $requette)
     {
-        $listErreur = Application_Model_Service_Utilities_DataValidation::signInCheck($requette);
+        $listErreur = Webshop_Dao_Utilities_DataValidation::compteCheck($requette);
         if (sizeof($listErreur) == 0) {
             $compte=self::findMultiArgument($_em, "Compte", array('login = \'' . $requette->getPost('login') . '\''));
             if(sizeof($compte)<=0){
@@ -249,6 +249,21 @@ class Application_Model_Service_ServiceDao
         }
     }
 
+    public static function updateCompte($_em, $request)
+    {
+        $password="";
+        $updateString="";
+        if(strcmp($request->getPost('lastName'),'')!=0)$updateString.=" cmp.nom = '".$request->getPost('lastName')."'";
+        if(strcmp($request->getPost('firstName'),'')!=0)$updateString.=", cmp.prenom = '".$request->getPost('firstName')."'";
+        if(strcmp($request->getPost('password'),'')!=0){
+            $password=Webshop_Utilities_PasswordHashe::passwordHashing($request->getPost('password'));
+            $updateString.=", cmp.password = '".$password."'";
+        }
+
+            //if(strcmp($request->getPost('passwordConf'),$request->getPost('password'))==0)$updateString.=" and cmp.password = '".$request->getPost('password')."'";
+        $q = $_em->createQuery("update Application_Model_Compte cmp set ".$updateString." where cmp.id='".$request->getPost('id')."'");
+        return $q->execute();
+    }
     public static function passwordUpdate($_em, $email,$password)
     {
         $password=Webshop_Utilities_PasswordHashe::passwordHashing($password);
