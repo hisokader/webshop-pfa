@@ -2,6 +2,7 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+
 /**
      * Initialize Doctrine
      * @return Doctrine_Manager
@@ -78,6 +79,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         ));
         return $autoloader;
     }
-
 }
 

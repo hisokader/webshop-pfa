@@ -42,13 +42,13 @@ class Application_Model_Service_ServiceDao
      */
     public static function ajoutObjet($_em, $type, $requette)
     {
+        
+       // if (!Application_Model_Service_Utilities_VerificationDonnes::requetteArgumentNull($requette)) {
         $listErreur = Application_Model_Service_Utilities_VerificationDonnes::verifCompte($requette);
-        if (!Application_Model_Service_Utilities_VerificationDonnes::requetteToCompte($requette)) {
-            if (sizeof($listErreur == 0)) {
-                self::getObjetByNameRequest($_em, $type, $requette);
-                return $listErreur;
-            }
+        if (sizeof($listErreur) == 0) {
+            self::getObjetByNameRequest($_em, $type, $requette);
         }
+        //}
         return $listErreur;
     }
 
@@ -61,11 +61,11 @@ class Application_Model_Service_ServiceDao
         switch ($nom) {
             case "Compte":
                 $tmp = new  Application_Model_Compte();
-                $tmp->email = $requette->getParam('email'); //$requette->email;
-                $tmp->nom = $requette->getParam('lastName'); //$requette->nom;
-                $tmp->prenom = $requette->getParam('firstName'); //$requette->prenom;
-                $tmp->password = Application_Model_Utilities_PasswordHashe::passwordHashing($requette->getParam('password'), 5);
-                $tmp->login = $requette->getParam('login'); //$requette->login;
+                $tmp->email = $requette->getPost('email'); //$requette->email;
+                $tmp->nom = $requette->getPost('lastName'); //$requette->nom;
+                $tmp->prenom = $requette->getPost('firstName'); //$requette->prenom;
+                $tmp->password = Application_Model_Utilities_PasswordHashe::passwordHashing($requette->getPost('password'), 5);
+                $tmp->login = $requette->getPost('login'); //$requette->login;
                 $tmp->isActivated = false; //$requette->getPost('isActivated'); //$requette->isActivated;
                 $_em->persist($tmp);
                 $_em->flush();
@@ -250,19 +250,21 @@ class Application_Model_Service_ServiceDao
 
     public static function login($_em, $requette)
     {
-        $listErreur = Application_Model_Service_Utilities_VerificationDonnes::verifCompte($requette);
-        if (sizeof($listErreur) > 0) {
+       //$listErreur = Application_Model_Service_Utilities_VerificationDonnes::verifCompte($requette);
+        //if (sizeof($listErreur) > 0) {
             $login = $requette->getParam('login');
             $listLogin = self::findMultiArgument($_em, "Compte", array('login = \'' . $login . '\''));
             foreach ($listLogin as $compte) {
-                if (Application_Model_Utilities_PasswordHashe::isPasswordsMatch($compte->password, $requette->getParam('password')
+                if (Application_Model_Utilities_PasswordHashe::isPasswordsMatch($requette->getParam('password'),$compte->password
                     , 5)
                 ) {
-                    $sess = new Zend_Session_Namespace('MySession');
-                    $sess->compte = serialize($compte);
-                }
+                    $session = new Zend_Session_Namespace('MySession');
+                    $session->compte = serialize($compte);
+                    return true;
+                }else
+                    return false;
             }
-        }
+        //}
     }
 
     public

@@ -112,14 +112,39 @@
 					<li><a href="#">Contact</a></li>
 					<li><a href="#">About</a></li>
 					<li class="horizSeparator">|</li>
-					<li class="bordred">
-						<!-- Button to trigger modal -->
-    					<a href="#logInModal"  data-toggle="modal">LogIn</a>
-    				</li>
-    				<li style="border-color:#70CCB7;"class="bordred">
-            <!-- Button to trigger modal -->
-		              <a href="<?= $this->url(array('controller'=>'index','action'=>'signin'));?>">Sign In</a>
-		            </li>
+          <?php 
+            
+            if (Zend_Session::sessionExists()) {
+                //Zend_Session::start();
+                $session = new Zend_Session_Namespace('MySession');
+                $userName = unserialize($session->compte);
+            ?> 
+                <li class="bordred">
+                  <!-- Button to trigger modal -->
+                  <a href="#"><?=$userName->nom ;?></a>
+                </li>
+                <li>
+                  <!-- Button to trigger modal -->
+                  <a href="<?= $this->url(array('controller'=>'index','action'=>'logout'));?>"> Log Out</a>
+                </li>
+             <?php   
+
+           }else{
+            ?>
+                <li class="bordred">
+                <!-- Button to trigger modal -->
+                  <a href="#logInModal"  data-toggle="modal">LogIn</a>
+                </li>
+                <li style="border-color:#70CCB7;"class="bordred">
+                <!-- Button to trigger modal -->
+                      <a href="<?= $this->url(array('controller'=>'index','action'=>'signin'));?>">Sign In</a>
+                </li>
+
+            <?php } ?>
+          
+
+
+					
 				</ul>
 			</div>
  	</div><!-- header -->
@@ -174,7 +199,7 @@
 		    		<input name="login" id="login" type="text" class="" placeholder="login ..." class="input-xlarge" />
 		    		<br/>
 		    		<label for="password">Password</label>
-		    		<input name="password" id="password" type="password" class="" placeholder="password ..." class="input-xlarge" />
+		    		<input name="password" id="password" type="password" class="" placeholder="password ..." class="input-xlarge" /><br/>
 		    		<a href="#" class="text-warning">Password Forgotten ?</a>
 		    	</div>
 				  

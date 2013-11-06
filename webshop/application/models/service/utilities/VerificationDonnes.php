@@ -32,37 +32,28 @@ class Application_Model_Service_Utilities_VerificationDonnes
         }
     }
 
-    public static function  requetteToCompte($requette)
+    /*public static function  requetteArgumentNull($requette)
     {
-        if ($requette->getParam('email') == null) {
-            return true;
-        }
-        if ($requette->getParam('lastName') == null) {
-            return true;
-        }
-        if ($requette->getParam('firstName') == null) {
-            return true;
-        }
-        if ($requette->getParam('password') == null) {
-            return true;
-        }
-        if ($requette->getParam('login') == null) {
-            return true;
-        }
+        if ($requette->getParam('email') == null) return true;
+        if ($requette->getParam('lastName') == null) return true;
+        if ($requette->getParam('firstName') == null) return true;
+        if ($requette->getParam('password') == null) return true;
+        if ($requette->getParam('passwordConf') == null) return true;
+        if ($requette->getParam('login') == null) return true;
         return false;
-    }
+    }*/
 
     /**
      * verification du login et du password
      * @param $requette
      * @return bool
      */
-    public static function  requetteToauthentification($requette)
+    public static function  loginVerification($requette)
     {
-        if ($requette->getParam('password') == null) {
+        if ($requette->getParam('password') != null) {
             return true;
         }
-        if ($requette->getParam('login') == null) {
+        if ($requette->getParam('login') != null) {
             return true;
         }
         return false;
@@ -72,20 +63,23 @@ class Application_Model_Service_Utilities_VerificationDonnes
     static function verifCompte($compte)
     {
         $listErreur = array();
-        if (!self::verifLogin($compte->login)) {
-            array_push($listErreur, ' Login non accepter (ex : anas_terios )');
+        if (!self::verifLogin($compte->getPost('login'))) {
+            array_push($listErreur, 'login');
         }
-        if (!self::verifPassword($compte->password)) {
-            array_push($listErreur, ' password non accepter (ex : myPas00rd )');
+        if (!self::verifPassword($compte->getPost('password'))) {
+            if(strcmp($compte->getPost('passwordConf'), $compte->getPost('password'))!=0){
+                array_push($listErreur, 'passwordConf');
+            }
+            array_push($listErreur, 'password');
         }
-        if (!self::verifEmail($compte->getParam('email'))) {
-            array_push($listErreur, ' Email non accepter (ex : anas_terios@gmail.fr )');
+        if (!self::verifEmail($compte->getPost('email'))) {
+            array_push($listErreur, 'email');
         }
-        if ($compte->nom == '') {
-            array_push($listErreur, ' Nom non null');
+        if (strlen($compte->getPost('lastName'))<=0) {
+            array_push($listErreur, 'lastName');
         }
-        if ($compte->prenom == '') {
-            array_push($listErreur, ' Prenom non null');
+        if (strlen($compte->getPost('firstName'))<=0) {
+            array_push($listErreur, 'firstName');
         }
         return $listErreur;
     }
